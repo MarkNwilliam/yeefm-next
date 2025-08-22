@@ -1,0 +1,1 @@
+export const BACKEND_URL = 'https://yeeplatformbackend.azurewebsites.net';

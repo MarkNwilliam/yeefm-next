@@ -23,7 +23,21 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-  },
+
+     // 🎯 Advanced image optimization settings
+     formats: ['image/avif', 'image/webp'], // 60-80% smaller files
+     deviceSizes: [640, 750, 828, 1080, 1200, 1920], // Optimized for common screens
+     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384], // Component sizes
+     minimumCacheTTL: 2592000, // 30 days cache (performance + freshness balance)
+     dangerouslyAllowSVG: true,
+     contentDispositionType: 'attachment',
+     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+     // 🔥 Additional optimizations
+     loader: 'default',
+     path: '/_next/image',
+     domains: [], // Keep empty, use remotePatterns instead
+     unoptimized: false, // Ensure optimization is enabled
+    },
     // 🚀 THE ONE MOST IMPACTFUL OPTIMIZATION
     experimental: {
       optimizePackageImports: [

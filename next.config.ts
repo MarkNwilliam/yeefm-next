@@ -24,6 +24,28 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+    // 🚀 THE ONE MOST IMPACTFUL OPTIMIZATION
+    experimental: {
+      optimizePackageImports: [
+        '@/components',
+        '@/lib', 
+        'lucide-react',
+        'react'
+      ],
+      // Enables faster page transitions and prefetching
+      turbo: {
+        rules: {
+          '*.svg': {
+            loaders: ['@svgr/webpack'],
+            as: '*.js',
+          },
+        },
+      },
+      // Optimizes server components and reduces bundle size
+      serverComponentsExternalPackages: ['sharp'],
+      // Enables partial prerendering for faster page loads
+      ppr: false, // Set to true once stable in your Next.js version
+    },
 };
 
 export default nextConfig;

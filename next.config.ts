@@ -8,6 +8,27 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true, // 👈 This skips TypeScript errors
   },
+  async redirects() {
+    return [
+      {
+        source: '/ebooks/:path*',
+        destination: '/books/:path*',
+        permanent: true, // 301 redirect
+      },
+      // Optional: Redirect just /ebooks to /books (if someone visits the base path)
+      {
+        source: '/ebooks',
+        destination: '/books',
+        permanent: true,
+      },
+      // Optional: Handle trailing slash
+      {
+        source: '/ebooks/',
+        destination: '/books',
+        permanent: true,
+      },
+    ];
+  },
   /* config options here */
   images: {
     remotePatterns: [

@@ -96,31 +96,65 @@ export default function AudiobooksPage({
 
   // Generate SEO metadata based on current state
   const generateMetadata = () => {
+    // Sanitize inputs to prevent JS injection and broken strings
+    const safeSearchTerm = searchTerm && typeof searchTerm === 'string' ? searchTerm.trim() : '';
+    const safeCategory = selectedCategory && typeof selectedCategory === 'string' ? selectedCategory.trim() : '';
+    const currentPageNum = Number.isInteger(currentPage) && currentPage > 0 ? currentPage : 1;
+    const totalPagesNum = Number.isInteger(totalPages) && totalPages > 0 ? totalPages : 1;
+  
+    // Base values
+    const siteName = "Yee FM";
     const baseTitle = "Free Audiobooks Library | Yee FM";
-    const baseDescription = "Discover and listen to thousands of free audiobooks online. Fiction, non-fiction, classics, and contemporary works available for streaming.";
-    
+    const baseDescription = "Stream free African and global audiobooks online. Fiction, non-fiction, classics, education, and more — all available for free.";
+    const baseKeywords = "free audiobooks, online audiobooks, listen free, audiobook streaming, digital library, African audiobooks, educational audio";
+  
     let title = baseTitle;
     let description = baseDescription;
-    let keywords = "free audiobooks, online audiobooks, listen audiobooks free, audiobook streaming, digital library";
-
-    if (searchTerm) {
-      title = `"${searchTerm}" - Search Results | Audiobooks | Yee FM`;
-      description = `Find audiobooks matching "${searchTerm}". Listen to free audiobooks online at Yee FM.`;
-      keywords = `${searchTerm}, audiobook search, ${keywords}`;
+    let keywords = baseKeywords;
+  
+    // Apply search filter
+    if (safeSearchTerm) {
+      title = `"${safeSearchTerm}" – Search Results | Audiobooks | ${siteName}`;
+      description = `Find and stream audiobooks matching "${safeSearchTerm}". Free online listening with no registration.`;
+      keywords = `"${safeSearchTerm}", audiobook search, ${baseKeywords}`;
     }
-
-    if (selectedCategory) {
-      title = `${selectedCategory} Audiobooks | Free Online Library | Yee FM`;
-      description = `Browse our collection of ${selectedCategory.toLowerCase()} audiobooks. Listen to free ${selectedCategory.toLowerCase()} audiobooks online.`;
-      keywords = `${selectedCategory.toLowerCase()} audiobooks, ${keywords}`;
+  
+    // Apply category filter
+    if (safeCategory) {
+      const lowerCategory = safeCategory.toLowerCase();
+      title = `${safeCategory} Audiobooks | Free Collection | ${siteName}`;
+      description = `Browse free ${lowerCategory} audiobooks. Discover African and international ${lowerCategory} titles on ${siteName}.`;
+      keywords = `${lowerCategory} audiobooks, free ${lowerCategory} books, ${keywords}`;
     }
-
-    if (currentPage > 1) {
-      title = `${title} - Page ${currentPage}`;
-      description = `${description} Page ${currentPage} of ${totalPages}.`;
+  
+    // Apply pagination
+    if (currentPageNum > 1) {
+      const pageNumber = Math.min(currentPageNum, 99); // Cap at page 99
+      title = `${title} - Page ${pageNumber}`;
+      description = `${description} Page ${pageNumber} of ${totalPagesNum}.`;
+      keywords = `page ${pageNumber}, ${keywords}`;
     }
-
-    return { title, description, keywords };
+  
+    // Fallback if no data and no filters
+    if (!safeSearchTerm && !safeCategory && totalItems === 0) {
+      title = "Free Audiobooks for Everyone | Yee FM";
+      description = "Yee FM offers free access to African and global audiobooks. Fiction, history, self-help, education, and more — all free to stream.";
+    }
+  
+    // Clean and deduplicate keywords
+    const keywordArray = keywords
+      .split(',')
+      .map(k => k.trim().replace(/[^a-z0-9\s]/g, '').trim()) // Remove quotes, special chars
+      .filter(Boolean)
+      .filter((value, index, self) => self.indexOf(value) === index) // Deduplicate
+      .slice(0, 15)
+      .join(', ');
+  
+    return {
+      title: title.substring(0, 60), // Max length for Google
+      description: description.substring(0, 155), // Ideal meta description
+      keywords: keywordArray
+    };
   };
 
   const metadata = generateMetadata();
@@ -421,24 +455,7 @@ export default function AudiobooksPage({
 
   const breadcrumb = generateBreadcrumb();
 
-  // Loading state for initial load
-  if (isLoading && audiobooks.length === 0) {
-    return (
-      <>
-        <Head>
-          <title>Loading Audiobooks | Yee FM</title>
-          <meta name="robots" content="noindex" />
-        </Head>
-        <div className="p-3 sm:p-6 bg-gray-50 min-h-screen">
-          <div className="mb-6 sm:mb-8">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Audiobooks Library</h1>
-            <p className="text-sm sm:text-base text-gray-600">Loading your audiobook collection...</p>
-          </div>
-          <LoadingSkeleton />
-        </div>
-      </>
-    );
-  }
+
 
   return (
     <>

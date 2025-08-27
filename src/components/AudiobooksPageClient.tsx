@@ -98,28 +98,66 @@ export default function AudiobooksPage({
   const generateMetadata = () => {
     const baseTitle = "Free Audiobooks Library | Yee FM";
     const baseDescription = "Discover and listen to thousands of free audiobooks online. Fiction, non-fiction, classics, and contemporary works available for streaming.";
-    
+    const defaultKeywords = "free audiobooks, online audiobooks, listen audiobooks free, audiobook streaming, digital library";
+  
+    // Extract key info from current audiobooks on the page
+    const pageTitles = audiobooks
+      .slice(0, 3)
+      .map(book => book.title)
+      .join(', ');
+  
+    const authors = Array.from(new Set(
+      audiobooks
+        .filter(b => b.author && b.author !== 'Unknown Author')
+        .map(b => b.author)
+        .slice(0, 5)
+    )).join(', ');
+  
+    const allCategories = Array.from(new Set(
+      audiobooks.flatMap(b => [
+        ...(b.categories || []),
+        ...(b.subjects || [])
+      ]).filter(Boolean)
+    )).slice(0, 8);
+  
+    const categoryKeywords = allCategories.length > 0 
+      ? allCategories.join(', ') 
+      : 'audiobooks';
+  
+    // Build dynamic title
     let title = baseTitle;
-    let description = baseDescription;
-    let keywords = "free audiobooks, online audiobooks, listen audiobooks free, audiobook streaming, digital library";
-
-    if (searchTerm) {
-      title = `"${searchTerm}" - Search Results | Audiobooks | Yee FM`;
-      description = `Find audiobooks matching "${searchTerm}". Listen to free audiobooks online at Yee FM.`;
-      keywords = `${searchTerm}, audiobook search, ${keywords}`;
-    }
-
-    if (selectedCategory) {
-      title = `${selectedCategory} Audiobooks | Free Online Library | Yee FM`;
-      description = `Browse our collection of ${selectedCategory.toLowerCase()} audiobooks. Listen to free ${selectedCategory.toLowerCase()} audiobooks online.`;
-      keywords = `${selectedCategory.toLowerCase()} audiobooks, ${keywords}`;
-    }
-
     if (currentPage > 1) {
-      title = `${title} - Page ${currentPage}`;
-      description = `${description} Page ${currentPage} of ${totalPages}.`;
+      if (pageTitles) {
+        title = `${pageTitles} & More – Page ${currentPage} | Yee FM`;
+      } else {
+        title = `${baseTitle} - Page ${currentPage}`;
+      }
+    } else if (pageTitles) {
+      title = `${pageTitles} & More – Free Audiobooks | Yee FM`;
     }
-
+  
+    // Build dynamic description
+    let description = baseDescription;
+    if (currentPage > 1) {
+      if (pageTitles && authors) {
+        description = `Listen to ${pageTitles} by ${authors} and more on Page ${currentPage}. Stream free audiobooks online at Yee FM.`;
+      } else if (pageTitles) {
+        description = `Now streaming: ${pageTitles} and other great titles on Page ${currentPage}. Free audiobook collection.`;
+      }
+    } else if (pageTitles && authors) {
+      description = `Listen to ${pageTitles} by ${authors} and more. High-quality free audiobooks from African and global authors. Stream anytime.`;
+    }
+  
+    // Build dynamic keywords
+    const keywords = [
+      ...new Set([
+        ...defaultKeywords.split(', '),
+        ...categoryKeywords.split(', '),
+        ...(authors ? authors.split(', ').slice(0, 3) : []),
+        ...(pageTitles ? pageTitles.split(', ').slice(0, 5) : [])
+      ])
+    ].join(', ');
+  
     return { title, description, keywords };
   };
 
@@ -420,26 +458,6 @@ export default function AudiobooksPage({
   };
 
   const breadcrumb = generateBreadcrumb();
-
-  // Loading state for initial load
-  if (isLoading && audiobooks.length === 0) {
-    return (
-      <>
-        <Head>
-          <title>Loading Audiobooks | Yee FM</title>
-          <meta name="robots" content="noindex" />
-        </Head>
-        <div className="p-3 sm:p-6 bg-gray-50 min-h-screen">
-          <div className="mb-6 sm:mb-8">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Audiobooks Library</h1>
-            <p className="text-sm sm:text-base text-gray-600">Loading your audiobook collection...</p>
-          </div>
-          <LoadingSkeleton />
-        </div>
-      </>
-    );
-  }
-
   return (
     <>
       <Head>

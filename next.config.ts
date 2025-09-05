@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone", // 👈 Add this line for standalone feature
-  //trailingSlash: true,
+  trailingSlash: true,
   reactStrictMode: false,
   eslint: {
     ignoreDuringBuilds: true,
@@ -12,11 +12,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      {
-        source: '/',
-        destination: '/home/',
-        permanent: true, // 301 redirect
-      },
+   
       {
         source: '/ebooks/:path*',
         destination: '/books/:path*',

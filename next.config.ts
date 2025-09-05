@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone", // 👈 Add this line for standalone feature
+  trailingSlash: true,
+  reactStrictMode: false,
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -31,6 +33,7 @@ const nextConfig: NextConfig = {
   },
   /* config options here */
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -57,7 +60,7 @@ const nextConfig: NextConfig = {
      loader: 'default',
      path: '/_next/image',
      domains: [], // Keep empty, use remotePatterns instead
-     unoptimized: false, // Ensure optimization is enabled
+   
     },
     // 🚀 THE ONE MOST IMPACTFUL OPTIMIZATION
     experimental: {

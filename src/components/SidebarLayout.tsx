@@ -1,8 +1,22 @@
 'use client';
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
+import { 
+  Home, 
+  BookOpen, 
+  Headphones, 
+  FileText, 
+  PenTool, 
+  Radio, 
+  Bookmark, 
+  Search,
+  FileCheck,
+  Scale,
+  Shield
+} from 'lucide-react';
 
 interface SidebarLayoutProps {
   children: React.ReactNode;
@@ -21,6 +35,7 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,10 +45,150 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
     }
   };
 
+  const navigation = [
+    { name: 'Dashboard', href: '/home', icon: Home },
+    { name: 'Books', href: '/books', icon: BookOpen },
+    { name: 'Audiobooks', href: '/audiobooks', icon: Headphones },
+    { name: 'Notes', href: '/notes', icon: FileText },
+    { name: 'Blogs', href: '/blogs', icon: PenTool },
+    { name: 'Radio', href: '/radio', icon: Radio },
+  ];
+
+  const legalNavigation = [
+    { name: 'Terms of Service', href: '/terms', icon: FileCheck },
+    { name: 'Privacy Policy', href: '/privacy', icon: Shield },
+  ];
+
   return (
     <div className="flex h-screen bg-white">
-      {/* Desktop Sidebar */}
-      <div className="hidden lg:flex lg:w-64 lg:flex-col">
+      {/* Mobile sidebar using Headless UI Dialog */}
+      <Transition.Root show={sidebarOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
+          <Transition.Child
+            as={Fragment}
+            enter="transition-opacity ease-linear duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity ease-linear duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-gray-900/80" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 flex">
+            <Transition.Child
+              as={Fragment}
+              enter="transition ease-in-out duration-300 transform"
+              enterFrom="-translate-x-full"
+              enterTo="translate-x-0"
+              leave="transition ease-in-out duration-300 transform"
+              leaveFrom="translate-x-0"
+              leaveTo="-translate-x-full"
+            >
+              <Dialog.Panel className="relative mr-16 flex w-full max-w-xs flex-1">
+                <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
+                  <div className="flex h-16 shrink-0 items-center justify-between">
+                    <Link href="/" className="flex items-center group" onClick={() => setSidebarOpen(false)}>
+                      <div className="w-8 h-8 mr-2">
+                        <Image 
+                          src="/favicon.ico" 
+                          alt="YeePlatform Logo"
+                          width={32}
+                          height={32}
+                          className="rounded-lg"
+                        />
+                      </div>
+                      <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        YeePlatform
+                      </span>
+                    </Link>
+                  </div>
+                  <nav className="flex flex-1 flex-col">
+                    <ul role="list" className="flex flex-1 flex-col gap-y-7">
+                      <li>
+                        <ul role="list" className="-mx-2 space-y-1">
+                          {navigation.map((item) => {
+                            const Icon = item.icon;
+                            const isCurrent = pathname === item.href;
+                            
+                            return (
+                              <li key={item.name}>
+                                <Link
+                                  href={item.href}
+                                  onClick={() => setSidebarOpen(false)}
+                                  className={`
+                                    group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold
+                                    ${isCurrent 
+                                      ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700' 
+                                      : 'text-gray-700 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100'
+                                    }
+                                  `}
+                                >
+                                  <Icon className="h-6 w-6 shrink-0" />
+                                  {item.name}
+                                </Link>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </li>
+                      
+                      {/* Legal Pages Section */}
+                      <li className="pt-6">
+                        <div className="text-xs font-semibold leading-6 text-gray-400">Legal</div>
+                        <ul role="list" className="-mx-2 mt-2 space-y-1">
+                          {legalNavigation.map((item) => {
+                            const Icon = item.icon;
+                            const isCurrent = pathname === item.href;
+                            
+                            return (
+                              <li key={item.name}>
+                                <Link
+                                  href={item.href}
+                                  onClick={() => setSidebarOpen(false)}
+                                  className={`
+                                    group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold
+                                    ${isCurrent 
+                                      ? 'bg-gray-50 text-blue-600' 
+                                      : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                                    }
+                                  `}
+                                >
+                                  <Icon className="h-6 w-6 shrink-0" />
+                                  {item.name}
+                                </Link>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </li>
+
+                      {/* Mobile App Download */}
+                      <li className="pt-6">
+                        <div className="text-xs font-semibold leading-6 text-gray-400">Get the App</div>
+                        <div className="mt-2">
+                          <a 
+                            href="https://play.google.com/store/apps/details?id=com.yeeplatform.yeefm&hl=en_IN"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block hover:opacity-80 transition-all duration-200"
+                          >
+                            <GooglePlayIcon />
+                          </a>
+                        </div>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition.Root>
+
+      {/* Static sidebar for desktop */}
+      <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 lg:z-50">
         <div className="flex flex-col flex-1 min-h-0 bg-white border-r border-gray-200 shadow-sm">
           {/* Sidebar Header */}
           <div className="flex items-center h-16 px-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
@@ -55,57 +210,53 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
 
           {/* Navigation */}
           <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
-            <Link href="/home" className="flex items-center px-3 py-2 text-gray-700 rounded-lg hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-blue-700 transition-all duration-200 transform hover:scale-105 hover:shadow-md group">
-              <svg className="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-              </svg>
-              Dashboard
-            </Link>
-
-            <Link href="/books" className="flex items-center px-3 py-2 text-gray-700 rounded-lg hover:bg-gradient-to-r hover:from-green-50 hover:to-green-100 hover:text-green-700 transition-all duration-200 transform hover:scale-105 hover:shadow-md group">
-              <svg className="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-              Books
-            </Link>
-
-            <Link href="/audiobooks" className="flex items-center px-3 py-2 text-gray-700 rounded-lg hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 hover:text-purple-700 transition-all duration-200 transform hover:scale-105 hover:shadow-md group">
-              <svg className="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-              </svg>
-              Audiobooks
-            </Link>
-
-            <Link href="/notes" className="flex items-center px-3 py-2 text-gray-700 rounded-lg hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 hover:text-orange-700 transition-all duration-200 transform hover:scale-105 hover:shadow-md group">
-              <svg className="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-              Notes
-            </Link>
-
-            <Link href="/blogs" className="flex items-center px-3 py-2 text-gray-700 rounded-lg hover:bg-gradient-to-r hover:from-indigo-50 hover:to-indigo-100 hover:text-indigo-700 transition-all duration-200 transform hover:scale-105 hover:shadow-md group">
-              <svg className="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-              </svg>
-              Blogs
-            </Link>
+            {navigation.map((item) => {
+              const Icon = item.icon;
+              const isCurrent = pathname === item.href;
+              
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`
+                    flex items-center px-3 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-md group
+                    ${isCurrent 
+                      ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700' 
+                      : 'text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-blue-700'
+                    }
+                  `}
+                >
+                  <Icon className="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110" />
+                  {item.name}
+                </Link>
+              );
+            })}
 
             {/* Legal Pages Section */}
             <div className="pt-6">
               <h3 className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Legal</h3>
               <div className="mt-2 space-y-1">
-                <Link href="/terms" className="flex items-center px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:text-gray-800 transition-all duration-200 transform hover:scale-105 group">
-                  <svg className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  Terms of Service
-                </Link>
-                <Link href="/privacy" className="flex items-center px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:text-gray-800 transition-all duration-200 transform hover:scale-105 group">
-                  <svg className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                  Privacy Policy
-                </Link>
+                {legalNavigation.map((item) => {
+                  const Icon = item.icon;
+                  const isCurrent = pathname === item.href;
+                  
+                  return (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className={`
+                        flex items-center px-3 py-2 text-sm rounded-lg transition-all duration-200 transform hover:scale-105 group
+                        ${isCurrent 
+                          ? 'bg-gray-50 text-blue-600' 
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
+                        }
+                      `}
+                    >
+                      <Icon className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" />
+                      {item.name}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 
@@ -127,128 +278,15 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
         </div>
       </div>
 
-      {/* Mobile Sidebar Overlay */}
-      {sidebarOpen && (
-        <>
-          {/* Backdrop - darker but visible */}
-          <div 
-            className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-60 backdrop-blur-sm"
-            onClick={() => setSidebarOpen(false)}
-          />
-          {/* Sidebar */}
-          <div className="lg:hidden fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-2xl border-r border-gray-200 transform transition-transform duration-300 ease-in-out">
-            <div className="flex flex-col h-full">
-              {/* Header */}
-              <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
-                <Link href="/" className="flex items-center group">
-                  <div className="w-8 h-8 mr-2 transition-transform duration-200 group-hover:rotate-12">
-                    <Image 
-                      src="/favicon.ico" 
-                      alt="YeePlatform Logo"
-                      width={32}
-                      height={32}
-                      className="rounded-lg"
-                    />
-                  </div>
-                  <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    YeePlatform
-                  </span>
-                </Link>
-                <button
-                  onClick={() => setSidebarOpen(false)}
-                  className="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-110"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-
-              {/* Navigation - Same as desktop */}
-              <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
-                <Link href="/home" className="flex items-center px-3 py-2 text-gray-700 rounded-lg hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-blue-700 transition-all duration-200 transform hover:scale-105 hover:shadow-md group">
-                  <svg className="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  Dashboard
-                </Link>
-
-                <Link href="/books" className="flex items-center px-3 py-2 text-gray-700 rounded-lg hover:bg-gradient-to-r hover:from-green-50 hover:to-green-100 hover:text-green-700 transition-all duration-200 transform hover:scale-105 hover:shadow-md group">
-                  <svg className="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                  Books
-                </Link>
-
-                <Link href="/audiobooks" className="flex items-center px-3 py-2 text-gray-700 rounded-lg hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 hover:text-purple-700 transition-all duration-200 transform hover:scale-105 hover:shadow-md group">
-                  <svg className="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                  </svg>
-                  Audiobooks
-                </Link>
-
-                <Link href="/notes" className="flex items-center px-3 py-2 text-gray-700 rounded-lg hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 hover:text-orange-700 transition-all duration-200 transform hover:scale-105 hover:shadow-md group">
-                  <svg className="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                  </svg>
-                  Notes
-                </Link>
-
-                <Link href="/blogs" className="flex items-center px-3 py-2 text-gray-700 rounded-lg hover:bg-gradient-to-r hover:from-indigo-50 hover:to-indigo-100 hover:text-indigo-700 transition-all duration-200 transform hover:scale-105 hover:shadow-md group">
-                  <svg className="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                  </svg>
-                  Blogs
-                </Link>
-
-                {/* Legal Pages Section */}
-                <div className="pt-6">
-                  <h3 className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Legal</h3>
-                  <div className="mt-2 space-y-1">
-                    <Link href="/terms" className="flex items-center px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:text-gray-800 transition-all duration-200 transform hover:scale-105 group">
-                      <svg className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      Terms of Service
-                    </Link>
-                    <Link href="/privacy" className="flex items-center px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:text-gray-800 transition-all duration-200 transform hover:scale-105 group">
-                      <svg className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                      </svg>
-                      Privacy Policy
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Mobile App Download */}
-                <div className="pt-6">
-                  <h3 className="px-3 text-xs font-semibold text-gray-500 uppercase mb-3 tracking-wider">Get the App</h3>
-                  <div className="px-3">
-                    <a 
-                      href="https://play.google.com/store/apps/details?id=com.yeeplatform.yeefm&hl=en_IN"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block hover:opacity-80 transition-all duration-200 transform hover:scale-105"
-                    >
-                      <GooglePlayIcon />
-                    </a>
-                  </div>
-                </div>
-              </nav>
-            </div>
-          </div>
-        </>
-      )}
-
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 lg:pl-64">
         {/* Top Header */}
         <header className="bg-white shadow-sm border-b h-16 flex items-center justify-between px-4">
           <button
             onClick={() => setSidebarOpen(true)}
             className="lg:hidden text-gray-600 hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-110"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 极 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
@@ -264,7 +302,7 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
                 <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-极4 0 7 7 0 0114 0z" />
                 </svg>
               </div>
             </form>

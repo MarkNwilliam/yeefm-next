@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone", // 👈 Add this line for standalone feature
-  trailingSlash: true,
+  //trailingSlash: true,
   reactStrictMode: false,
   eslint: {
     ignoreDuringBuilds: true,

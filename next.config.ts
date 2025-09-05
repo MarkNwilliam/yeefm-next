@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/',
+        destination: '/home',
+        permanent: true, // 301 redirect
+      },
+      {
         source: '/ebooks/:path*',
         destination: '/books/:path*',
         permanent: true, // 301 redirect

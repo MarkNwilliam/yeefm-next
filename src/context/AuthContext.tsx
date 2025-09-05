@@ -24,32 +24,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('🔐 AuthProvider: Setting up auth listener...');
+    
     // Check if Firebase is properly initialized
     if (!auth) {
-      console.error('Firebase Auth not initialized');
+      console.error('❌ Firebase Auth not initialized');
+      console.error('This usually means environment variables are missing');
       setError('Firebase configuration error. Please check your environment variables.');
       setLoading(false);
       return;
     }
 
+    console.log('✅ Firebase Auth is initialized, setting up listener');
+
     try {
       const unsubscribe = onAuthStateChanged(auth, 
         (currentUser) => {
+          console.log('🔐 Auth state changed:', currentUser ? 'User logged in' : 'User logged out');
           setUser(currentUser);
           setLoading(false);
           setError(null);
         },
         (authError) => {
-          console.error('Auth state change error:', authError);
-          setError('Authentication error occurred');
+          console.error('❌ Auth state change error:', authError);
+          setError(`Authentication error: ${authError.message}`);
           setLoading(false);
         }
       );
 
-      return () => unsubscribe();
+      console.log('✅ Auth listener set up successfully');
+      return () => {
+        console.log('🔐 Cleaning up auth listener');
+        unsubscribe();
+      };
     } catch (err) {
-      console.error('Failed to set up auth listener:', err);
-      setError('Failed to initialize authentication');
+      console.error('❌ Failed to set up auth listener:', err);
+      setError(`Failed to initialize authentication: ${err instanceof Error ? err.message : 'Unknown error'}`);
       setLoading(false);
     }
   }, []);
@@ -60,8 +70,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     error
   }), [user, loading, error]);
 
+  // Show error state in UI for debugging
+  if (error) {
+    console.error('🚨 AuthProvider Error State:', error);
+  }
+
   return (
     <AuthContext.Provider value={value}>
+      {error && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          backgroundColor: '#ff4444',
+          color: 'white',
+          padding: '10px',
+          textAlign: 'center',
+          zIndex: 9999,
+          fontSize: '14px'
+        }}>
+          🚨 Auth Error: {error}
+        </div>
+      )}
       {children}
     </AuthContext.Provider>
   );

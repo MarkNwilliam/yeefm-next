@@ -16,8 +16,32 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// ADD FIREBASE ENVIRONMENT DEBUG - This runs on both server and client
+console.log('=== LAYOUT.TSX ENV DEBUG ===');
+console.log('Current Environment:', process.env.NODE_ENV);
+console.log('Firebase Environment Variables Check:');
+console.log('NEXT_PUBLIC_API_KEY:', process.env.NEXT_PUBLIC_API_KEY ? 'EXISTS' : 'MISSING');
+console.log('NEXT_PUBLIC_AUTH_DOMAIN:', process.env.NEXT_PUBLIC_AUTH_DOMAIN ? 'EXISTS' : 'MISSING');
+console.log('NEXT_PUBLIC_PROJECT_ID:', process.env.NEXT_PUBLIC_PROJECT_ID ? 'EXISTS' : 'MISSING');
+console.log('NEXT_PUBLIC_STORAGE_BUCKET:', process.env.NEXT_PUBLIC_STORAGE_BUCKET ? 'EXISTS' : 'MISSING');
+console.log('NEXT_PUBLIC_MESSAGING_SENDER_ID:', process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID ? 'EXISTS' : 'MISSING');
+console.log('NEXT_PUBLIC_APP_ID:', process.env.NEXT_PUBLIC_APP_ID ? 'EXISTS' : 'MISSING');
+
+// Show partial values (first 10 characters for security)
+console.log('Partial Values:');
+console.log('API_KEY (first 10):', process.env.NEXT_PUBLIC_API_KEY?.substring(0, 10) || 'MISSING');
+console.log('AUTH_DOMAIN (first 10):', process.env.NEXT_PUBLIC_AUTH_DOMAIN?.substring(0, 10) || 'MISSING');
+console.log('PROJECT_ID (first 10):', process.env.NEXT_PUBLIC_PROJECT_ID?.substring(0, 10) || 'MISSING');
+console.log('STORAGE_BUCKET (first 10):', process.env.NEXT_PUBLIC_STORAGE_BUCKET?.substring(0, 10) || 'MISSING');
+console.log('MESSAGING_SENDER_ID (first 10):', process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID?.substring(0, 10) || 'MISSING');
+console.log('APP_ID (first 10):', process.env.NEXT_PUBLIC_APP_ID?.substring(0, 10) || 'MISSING');
+console.log('===============================');
+
+// Determine if we're in development
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://www.yeefm.com'), // ← ADD THIS LINE
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://www.yeefm.com'),
   title: "Yee FM Ebooks Audiobooks and Research papers with An Ai Virtual teacher",
   description: "Yee FM is a cutting-edge multilingual ebook and audiobook streaming platform that offers AI-powered chat assistance, seamless text-to-speech synthesis, and an extensive library of ebooks. Perfect for avid readers and learners, Yee FM supports multiple languages, including French, Spanish, Swahili, and Arabic. Enjoy personalized reading experiences and effortless audiobook streaming. The website is also an online radio directory with more than 2000 radio stations!",
   keywords: "ebooks, audiobooks, research papers, virtual teacher, ai, chatbot, text-to-speech, multilingual, radio stations, online radio, streaming platform, reading, learning, languages, French, Spanish, Swahili, Arabic, personalized, experiences, radio directory, 2000 radio stations",
@@ -30,7 +54,7 @@ export const metadata: Metadata = {
     url: "https://www.yeefm.com/",
     images: [
       {
-        url: "/favicon_io/android-chrome-512x512.png", // ← This will now be https://www.yeefm.com/favicon_io/android-chrome-512x512.png
+        url: "/favicon_io/android-chrome-512x512.png",
         width: 600,
         height: 314,
         alt: "Yee FM Logo"
@@ -42,16 +66,16 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Yee FM Ebooks Audiobooks and Research papers with An Ai Virtual teacher",
     description: "Yee FM is a cutting-edge multilingual ebook and audiobook streaming platform that offers AI-powered chat assistance, seamless text-to-speech synthesis, and an extensive library of ebooks.",
-    images: ["/favicon_io/android-chrome-512x512.png"] // ← This will also be fixed
+    images: ["/favicon_io/android-chrome-512x512.png"]
   },
   icons: {
-    icon: "/favicon_io/favicon.ico",
+    icon: "/favicon.ico",
     apple: "/favicon_io/apple-touch-icon.png"
   },
   manifest: "/manifest.json",
   other: {
     "theme-color": "#000000",
-    "google-adsense-account": "ca-pub-7163440324211024",
+    // REMOVED: "google-adsense-account": "ca-pub-7163440324211024", ← DELETE THIS LINE
     "yandex-verification": "c03b962c1dc2328c1"
   }
 };
@@ -64,6 +88,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Google AdSense - MOVED TO HEAD */}
+        <Script
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7163440324211024`}
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+          data-adtest={isDevelopment ? "on" : "off"} // ← ADD THIS
+        />
+
         {/* Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -138,13 +170,7 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Google AdSense */}
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7163440324211024"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
+        {/* REMOVED: Duplicate AdSense script from here */}
 
         {/* Structured Data */}
         <Script

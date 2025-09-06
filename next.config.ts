@@ -34,7 +34,7 @@ const nextConfig: NextConfig = {
   },
   /* config options here */
   images: {
-    unoptimized: true,
+  
     remotePatterns: [
       {
         protocol: 'https',
@@ -61,10 +61,7 @@ const nextConfig: NextConfig = {
           },
         },
       },
-      // Optimizes server components and reduces bundle size
-      serverComponentsExternalPackages: ['sharp'],
-      // Enables partial prerendering for faster page loads
-      ppr: false, // Set to true once stable in your Next.js version
+   
     };
 
 

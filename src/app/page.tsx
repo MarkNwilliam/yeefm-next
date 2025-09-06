@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link'; // Add this import
-import { useRouter } from 'next/navigation'; // Add this import
 import { 
   BookOpen, 
   Headphones, 
@@ -20,29 +18,23 @@ import {
   Users,
   Play,
   ArrowRight,
-  Star,
-  LucideProps
+  Star
 } from 'lucide-react';
-import { ForwardRefExoticComponent, RefAttributes } from 'react';
 
 const LandingPage = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const router = useRouter(); // Add router
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
-  // Fix navigation handlers
   const handleExploreClick = () => {
-    router.push('/books/page/1'); // Use router.push for navigation
+    console.log('Navigate to /ebooks/page/1');
   };
 
-  type CategoryName = 'Free Ebooks' | 'Audiobooks' | 'Scientific Papers' | 'Notes & PPTs' | 'Blogs' | 'Radio' | 'My Reads' | 'Search';
-
-  const handleCategoryClick = (category: CategoryName) => {
-    const routes: Record<CategoryName, string> = {
-      'Free Ebooks': '/books/page/1',
+  const handleCategoryClick = (category) => {
+    const routes = {
+      'Free Ebooks': '/ebooks/page/1',
       'Audiobooks': '/audiobooks/page/1',
       'Scientific Papers': '/papers/page/1',
       'Notes & PPTs': '/chapters/page/1',
@@ -51,7 +43,7 @@ const LandingPage = () => {
       'My Reads': '/my-reads',
       'Search': '/search'
     };
-    router.push(routes[category]);
+    console.log(`Navigate to ${routes[category] || '/'}`);
   };
 
   const features = [
@@ -87,9 +79,7 @@ const LandingPage = () => {
     }
   ];
 
-  type LucideIcon = ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>
-
-  const categories: { name: CategoryName; icon: LucideIcon; color: string }[] = [
+  const categories = [
     { name: "Free Ebooks", icon: BookOpen, color: "bg-blue-500" },
     { name: "Audiobooks", icon: Headphones, color: "bg-green-500" },
     { name: "Scientific Papers", icon: Microscope, color: "bg-purple-500" },
@@ -102,7 +92,7 @@ const LandingPage = () => {
 
   const footerLinks = {
     platform: [
-      { name: "Free Ebooks", route: "/books/page/1" }, // Fixed route
+      { name: "Free Ebooks", route: "/ebooks/page/1" },
       { name: "Audiobooks", route: "/audiobooks/page/1" },
       { name: "Scientific Papers", route: "/papers/page/1" },
       { name: "Notes & PPTs", route: "/chapters/page/1" }
@@ -186,6 +176,11 @@ const LandingPage = () => {
                       src="/screen2.jpg" 
                       alt="Yee FM App Screenshot" 
                       className="w-full h-auto rounded-2xl"
+                      onError={(e) => {
+                        // Fallback if image doesn't exist
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
                     />
                     {/* Fallback placeholder */}
                     <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl aspect-[9/16] items-center justify-center hidden">
@@ -291,6 +286,7 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
     </div>
   );
 };

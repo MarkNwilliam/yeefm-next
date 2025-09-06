@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone", // 👈 Add this line for standalone feature
-  assetPrefix: 'https://www.yeefm.com',
 
   reactStrictMode: false,
   eslint: {
@@ -53,15 +52,6 @@ const nextConfig: NextConfig = {
 
     },
 
-      // Enables faster page transitions and prefetching
-      turbo: {
-        rules: {
-          '*.svg': {
-            loaders: ['@svgr/webpack'],
-            as: '*.js',
-          },
-        },
-      },
    
     };
 

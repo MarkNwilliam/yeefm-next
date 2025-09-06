@@ -26,6 +26,10 @@ COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 
+# Copy static assets with proper ownership (the fix)
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./_next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+
 USER nextjs
 EXPOSE 3000
 ENV PORT 3000

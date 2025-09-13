@@ -20,7 +20,6 @@ interface AudiobookItem {
 interface AudiobookCardProps {
   audiobook: AudiobookItem;
   onPlay: () => void;
-  onDownload: () => void;
   onCategoryClick?: (category: string) => void;
   variant: 'grid' | 'list';
 }
@@ -28,7 +27,6 @@ interface AudiobookCardProps {
 export default function AudiobookCard({ 
   audiobook, 
   onPlay, 
-  onDownload, 
   onCategoryClick,
   variant = 'grid'
 }: AudiobookCardProps) {
@@ -107,12 +105,6 @@ export default function AudiobookCard({
                 >
                   Play
                 </button>
-                <button
-                  onClick={onDownload}
-                  className="flex-1 sm:flex-initial bg-gray-600 hover:bg-gray-700 text-white text-xs sm:text-sm py-2 px-3 sm:px-4 rounded transition-colors whitespace-nowrap"
-                >
-                  Download
-                </button>
               </div>
             </div>
           </div>
@@ -183,12 +175,7 @@ export default function AudiobookCard({
           >
             Play
           </button>
-          <button
-            onClick={onDownload}
-            className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 px-3 rounded text-sm"
-          >
-            Download
-          </button>
+  
         </div>
       </div>
     </div>

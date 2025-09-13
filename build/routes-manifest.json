@@ -1,0 +1,277 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    },
+    {
+      "source": "/ebooks/:path*",
+      "destination": "/books/:path*",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/ebooks(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+    },
+    {
+      "source": "/ebooks",
+      "destination": "/books",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/ebooks(?:/)?$"
+    },
+    {
+      "source": "/ebooks/",
+      "destination": "/books",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/ebooks/(?:/)?$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/audiobooks/page/[pageNumber]",
+      "regex": "^/audiobooks/page/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPpageNumber": "nxtPpageNumber"
+      },
+      "namedRegex": "^/audiobooks/page/(?<nxtPpageNumber>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/audiobooks/search/[query]/page/[pageNumber]",
+      "regex": "^/audiobooks/search/([^/]+?)/page/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPquery": "nxtPquery",
+        "nxtPpageNumber": "nxtPpageNumber"
+      },
+      "namedRegex": "^/audiobooks/search/(?<nxtPquery>[^/]+?)/page/(?<nxtPpageNumber>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/audiobooks/[id]/[slug]",
+      "regex": "^/audiobooks/([^/]+?)/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid",
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/audiobooks/(?<nxtPid>[^/]+?)/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/audiobooks/[id]/[slug]/listen",
+      "regex": "^/audiobooks/([^/]+?)/([^/]+?)/listen(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid",
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/audiobooks/(?<nxtPid>[^/]+?)/(?<nxtPslug>[^/]+?)/listen(?:/)?$"
+    },
+    {
+      "page": "/blogs/page/[pageNumber]",
+      "regex": "^/blogs/page/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPpageNumber": "nxtPpageNumber"
+      },
+      "namedRegex": "^/blogs/page/(?<nxtPpageNumber>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/blogs/search/[query]/page/[pageNumber]",
+      "regex": "^/blogs/search/([^/]+?)/page/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPquery": "nxtPquery",
+        "nxtPpageNumber": "nxtPpageNumber"
+      },
+      "namedRegex": "^/blogs/search/(?<nxtPquery>[^/]+?)/page/(?<nxtPpageNumber>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/blogs/[id]/[slug]",
+      "regex": "^/blogs/([^/]+?)/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid",
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/blogs/(?<nxtPid>[^/]+?)/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/books/page/[pageNumber]",
+      "regex": "^/books/page/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPpageNumber": "nxtPpageNumber"
+      },
+      "namedRegex": "^/books/page/(?<nxtPpageNumber>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/books/search/[query]",
+      "regex": "^/books/search/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPquery": "nxtPquery"
+      },
+      "namedRegex": "^/books/search/(?<nxtPquery>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/books/search/[query]/page/[pageNumber]",
+      "regex": "^/books/search/([^/]+?)/page/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPquery": "nxtPquery",
+        "nxtPpageNumber": "nxtPpageNumber"
+      },
+      "namedRegex": "^/books/search/(?<nxtPquery>[^/]+?)/page/(?<nxtPpageNumber>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/books/[id]/read/[slug]",
+      "regex": "^/books/([^/]+?)/read/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid",
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/books/(?<nxtPid>[^/]+?)/read/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/books/[id]/read-epub/[slug]",
+      "regex": "^/books/([^/]+?)/read\\-epub/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid",
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/books/(?<nxtPid>[^/]+?)/read\\-epub/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/books/[id]/[slug]",
+      "regex": "^/books/([^/]+?)/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid",
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/books/(?<nxtPid>[^/]+?)/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/notes/page/[pageNumber]",
+      "regex": "^/notes/page/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPpageNumber": "nxtPpageNumber"
+      },
+      "namedRegex": "^/notes/page/(?<nxtPpageNumber>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/notes/search/[query]/page/[pageNumber]",
+      "regex": "^/notes/search/([^/]+?)/page/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPquery": "nxtPquery",
+        "nxtPpageNumber": "nxtPpageNumber"
+      },
+      "namedRegex": "^/notes/search/(?<nxtPquery>[^/]+?)/page/(?<nxtPpageNumber>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/notes/[id]/read/[slug]",
+      "regex": "^/notes/([^/]+?)/read/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid",
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/notes/(?<nxtPid>[^/]+?)/read/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/notes/[id]/read-epub/[slug]",
+      "regex": "^/notes/([^/]+?)/read\\-epub/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid",
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/notes/(?<nxtPid>[^/]+?)/read\\-epub/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/notes/[id]/[slug]",
+      "regex": "^/notes/([^/]+?)/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid",
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/notes/(?<nxtPid>[^/]+?)/(?<nxtPslug>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/audiobooks",
+      "regex": "^/audiobooks(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/audiobooks(?:/)?$"
+    },
+    {
+      "page": "/blogs",
+      "regex": "^/blogs(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blogs(?:/)?$"
+    },
+    {
+      "page": "/books",
+      "regex": "^/books(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/books(?:/)?$"
+    },
+    {
+      "page": "/home",
+      "regex": "^/home(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/home(?:/)?$"
+    },
+    {
+      "page": "/notes",
+      "regex": "^/notes(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/notes(?:/)?$"
+    },
+    {
+      "page": "/notes/search",
+      "regex": "^/notes/search(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/notes/search(?:/)?$"
+    },
+    {
+      "page": "/privacy",
+      "regex": "^/privacy(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/privacy(?:/)?$"
+    },
+    {
+      "page": "/terms",
+      "regex": "^/terms(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/terms(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "RSC",
+    "varyHeader": "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Router-Segment-Prefetch",
+    "prefetchHeader": "Next-Router-Prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "Next-Router-Segment-Prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments"
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

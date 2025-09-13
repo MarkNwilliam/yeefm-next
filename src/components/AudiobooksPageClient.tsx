@@ -415,22 +415,7 @@ export default function AudiobooksPage({
     router.push(`/audiobooks/${audiobook._id}/${slug}`);
   }, [router]);
 
-  // Handle audiobook download
-  const handleDownload = useCallback((audiobook: AudiobookItem) => {
-    const downloadUrl = audiobook.audioUrl;
-    if (downloadUrl) {
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.download = `${audiobook.title}.mp3`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else {
-      console.warn('No audio URL available for audiobook:', audiobook.title);
-    }
-  }, []);
+
 
   // Clear all filters
   const handleClearFilters = useCallback(() => {
@@ -727,7 +712,7 @@ export default function AudiobooksPage({
                   }}
                   variant={viewMode}
                   onPlay={() => handlePlay(audiobook)}
-                  onDownload={() => handleDownload(audiobook)}
+         
                   onCategoryClick={handleCategoryChange}
                 />
               ))}

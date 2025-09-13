@@ -22,7 +22,6 @@ interface EbookItem {
 interface EbookCardProps {
   ebook: EbookItem;
   onView: () => void;
-  onDownload: () => void;
   onCategoryClick?: (category: string) => void;
   variant: 'grid' | 'list';
 }
@@ -30,7 +29,6 @@ interface EbookCardProps {
 export default function EbookCard({ 
   ebook, 
   onView, 
-  onDownload, 
   onCategoryClick,
   variant = 'grid'
 }: EbookCardProps) {
@@ -106,12 +104,7 @@ export default function EbookCard({
                 >
                   Read Now
                 </button>
-                <button
-                  onClick={onDownload}
-                  className="flex-1 sm:flex-initial bg-gray-600 hover:bg-gray-700 text-white text-xs sm:text-sm py-2 px-3 sm:px-4 rounded transition-colors whitespace-nowrap"
-                >
-                  Download
-                </button>
+      
               </div>
             </div>
           </div>

@@ -219,22 +219,7 @@ export default function EbooksPage() {
     updateURL(page, searchTerm, category);
   }, [searchTerm, updateURL]);
 
-  // Handle ebook download
-  const handleDownload = useCallback((ebook: EbookItem) => {
-    const downloadUrl = ebook.ebookpdfUrl || ebook.ebookUrl;
-    if (downloadUrl) {
-      // Create a temporary link for download
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else {
-      console.warn('No download URL available for ebook:', ebook.title);
-    }
-  }, []);
+
 
   // Handle ebook view
   const handleView = useCallback((ebook: EbookItem) => {
@@ -445,7 +430,6 @@ export default function EbooksPage() {
               rating: ebook.statistics?.rating || ebook.rating || 0
             }}
             onView={() => handleView(ebook)}
-            onDownload={() => handleDownload(ebook)}
             onCategoryClick={handleCategoryChange}
             variant={viewMode}
           />

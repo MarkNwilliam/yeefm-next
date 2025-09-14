@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "npm install && npm run build:next && npm run build:move",
-    "build:next": "next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },

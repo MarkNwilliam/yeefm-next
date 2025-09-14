@@ -6,7 +6,6 @@
     "dev": "next dev --turbopack",
     "build": "npm install && npm run build:next && npm run build:move",
     "build:next": "next build",
-    "build:move": "mv ./build/static ./build/standalone/build && mv ./public ./build/standalone",
     "start": "next start",
     "lint": "next lint"
   },

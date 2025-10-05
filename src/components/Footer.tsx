@@ -92,7 +92,7 @@ export default function Footer() {
           <div className="md:w-1/4 flex flex-col items-center md:items-start">
             <Link href="/" className="flex items-center space-x-3 no-underline text-gray-800 mb-4">
               <Image
-                src="/favicon.png"
+                src="/favicon.ico"
                 alt="Yee FM Logo"
                 width={48}
                 height={48}
